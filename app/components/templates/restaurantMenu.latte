@@ -1,0 +1,18 @@
+<h1>{$restaurant['restaurant']['title']}</h1>
+<ul n:if="$restaurant['restaurant']['url'] || $restaurant['restaurant']['city'] || $restaurant['restaurant']['address'] || $restaurant['restaurant']['phone_numbers']">
+    <li n:if="$restaurant['restaurant']['city']">Město: {$restaurant['restaurant']['city']}</li>
+    <li n:if="$restaurant['restaurant']['address']">Adresa: {$restaurant['restaurant']['address']}</li>
+    <li n:if="$restaurant['restaurant']['phone_numbers']">Telefon: {$restaurant['restaurant']['phone_numbers']}</li>
+    <li n:if="$restaurant['restaurant']['url']"><a href="{$restaurant['restaurant']['url']}" target="_blank">odkaz</a></li>
+</ul>
+
+<table>
+    {foreach $restaurant['daily_menus'] as $daily_menu}
+    <tr><th colspan="2"><h2>{($daily_menu['daily_menu']['name'] == '')?'Denní menu':$daily_menu['daily_menu']['name'] }</h2></th></tr>
+
+    <tr><th>Pokrm</th><th>Cena</th></tr>
+    {foreach $daily_menu['dishes'] as $dish}
+    <tr><td>{$dish['name']}</td><td>{$dish['price']}</td></tr>
+    {/foreach}
+    {/foreach}
+</table>

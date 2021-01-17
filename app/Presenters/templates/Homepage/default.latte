@@ -1,0 +1,13 @@
+{* This is the welcome page, you can delete it *}
+
+{block content}
+	<h1 n:block=title>Denní menu restaurací</h1>
+    <a n:href="Newsletter:subscribe">Přihlásit k odběru</a>
+    <br><a n:href="Cron:synchronize" target="_blank">Synchronizovat (odkaz pro rychlejší test)</a>
+    <br><a n:href="Cron:emails" target="_blank">Odeslat emaily (odkaz pro rychlejší test)</a>
+	{foreach $restaurants as $restaurantId}
+        {control restaurantMenu $restaurantId}
+        <br><br>
+	{/foreach}
+
+
