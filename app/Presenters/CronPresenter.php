@@ -21,7 +21,7 @@ final class CronPresenter extends BasePresenter {
 	 * start Zomato synchronization
 	 */
 	public function actionSynchronize(): void {
-		$restarantData = new RestaurantData($this->database, $this->modelRestaurant, $this->dailyMenu, $this->dish);
+		$restarantData = new RestaurantData($this->modelRestaurant, $this->dailyMenu, $this->dish);
 		$restarantData->reloadRestaurantData();
 		$restarantData->reloadMenusData();
 		die('Hotovo: ' . date('Y-m-d H:i:s'));

@@ -26,15 +26,13 @@ class BasePresenter extends Nette\Application\UI\Presenter {
 
 	/**
 	 * BasePresenter constructor.
-	 * @param Nette\Database\Connection $database
 	 * @param Restaurant $modelRestaurant
 	 * @param DailyMenu $dailyMenu
 	 * @param Dish $dish
 	 * @param Email $modelMail
 	 * @param TieMailRestaurant $modelTie
 	 */
-	public function __construct(Nette\Database\Connection $database, Restaurant $modelRestaurant, DailyMenu $dailyMenu, Dish $dish, Email $modelMail, TieMailRestaurant $modelTie) {
-		$this->database = $database;
+	public function __construct(Restaurant $modelRestaurant, DailyMenu $dailyMenu, Dish $dish, Email $modelMail, TieMailRestaurant $modelTie) {
 		$this->modelRestaurant = $modelRestaurant;
 		$this->dailyMenu = $dailyMenu;
 		$this->dish = $dish;

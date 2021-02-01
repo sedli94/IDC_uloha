@@ -20,13 +20,11 @@ final class RestaurantData {
 
 	/**
 	 * RestaurantData constructor.
-	 * @param Nette\Database\Connection $database
 	 * @param Restaurant $modelRestaurant
 	 * @param DailyMenu $modelMenu
 	 * @param Dish $modelDish
 	 */
-	public function __construct(Nette\Database\Connection $database, Restaurant $modelRestaurant, DailyMenu $modelMenu, Dish $modelDish) {
-		$this->database = $database;
+	public function __construct(Restaurant $modelRestaurant, DailyMenu $modelMenu, Dish $modelDish) {
 		$this->modelRestaurant = $modelRestaurant;
 		$this->modelMenu = $modelMenu;
 		$this->modelDish = $modelDish;
@@ -37,7 +35,7 @@ final class RestaurantData {
 	 * Restaurants witch are not in Zomato API will be deactivate
 	 */
 	public function reloadRestaurantData(): void {
-		$this->database->query('UPDATE `restaurants` SET`active`=`active_for_download` WHERE `active_for_download` = 0');
+		$this->modelRestaurant->setActiveBeforeImport();
 		foreach ($this->modelRestaurant->getAllActiveForDownload() as $restaurant) {
 			$params = array('res_id' => $restaurant->res_id);
 			$restaurantData = $this->callApi('restaurant', $params);
@@ -72,12 +70,28 @@ final class RestaurantData {
 	}
 
 	/**
-	 * Function for communication with Zomato API
+	 * Function for communication with Zomato API with Guzzle
 	 * @param string $function called function
 	 * @param array $paramsArray array with params for API
 	 * @return array Json decoded API respons with added result code
 	 */
 	private function callApi(string $function, array $paramsArray): array {
+		$client = new \GuzzleHttp\Client(['base_uri' => self::$apiURL]);
+		$response = $client->request('GET',  $function, ['headers' => ['user-key' => self::$userKey], 'query' => $paramsArray, 'http_errors' => false]);
+
+		$result = ($response->getBody()->getContents());
+		$result_array = json_decode($result, true);
+		$result_array['code'] = $response->getStatusCode();
+		return $result_array;
+	}
+
+	/**
+	 * Function for communication with Zomato API with curl
+	 * @param string $function called function
+	 * @param array $paramsArray array with params for API
+	 * @return array Json decoded API respons with added result code
+	 */
+	private function callApiWithCurl(string $function, array $paramsArray): array {
 		$params = http_build_query($paramsArray);
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, self::$apiURL . $function . '?' . $params);
