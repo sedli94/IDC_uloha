@@ -2,6 +2,6 @@ parameters:
 
 
 database:
-	dsn: 'mysql:host=127.0.0.1;dbname=test_sedlacek_db'
-	user: test_sedlacek_cz
+	dsn: 'mysql:host=127.0.0.1;dbname=test_sedlacek_php_7_4_cz_db'
+	user: test_sedlacek_php_7_4_cz
 	password: fatOshdik4
