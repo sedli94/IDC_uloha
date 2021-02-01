@@ -26,8 +26,4 @@ class Restaurant {
 	public function getTable(): Nette\Database\Table\Selection {
 		return $this->database->table(self::$table);
 	}
-
-	public function setActiveBeforeImport():void {
-		$this->database->query('UPDATE `restaurants` SET`active`=`active_for_download` WHERE `active_for_download` = 0');
-	}
 }
